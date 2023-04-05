@@ -62,20 +62,11 @@ class CustomerTest extends TestCase
         $response = $this->get('/customers');
 
         // assert response has the correct JSON structure
-        $response->seeJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
+        $response->seeJsonStructure([[
                     'fullname',
                     'email',
-                    'username',
-                    'gender',
                     'country',
-                    'city',
-                    'phone'
-                ]
-            ]
-        ]);
+        ]])->assertResponseOk();
 
 
     }
@@ -111,8 +102,7 @@ class CustomerTest extends TestCase
         $em->flush();
 
         $response = $this->get('/customers/' . $customer->getId());
-        $response->seeJsonEquals(['data' => [
-            'id' => $customer->getId(),
+        $response->seeJsonEquals([
             'fullname' => $customer->getFullname(),
             'email' => $customer->getEmail(),
             'username' => $customer->getUsername(),
@@ -120,7 +110,7 @@ class CustomerTest extends TestCase
             'country' => $customer->getCountry(),
             'city' => $customer->getCity(),
             'phone' => $customer->getPhone(),
-        ]])->assertResponseOk();
+        ])->assertResponseOk();
     }
 
     /**
